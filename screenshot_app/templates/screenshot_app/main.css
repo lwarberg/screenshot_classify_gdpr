@@ -1,0 +1,13 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr, 2fr;
+  grid-gap: 10px;
+}
+.formview {
+  grid-column: 1 ;
+  grid-row: 1;
+}
+.imageview {
+  grid-column: 2;
+  grid-row: 1;
+}

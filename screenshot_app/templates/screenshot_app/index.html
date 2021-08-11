@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <title>GDPR Screenshot Tool</title>
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/nav_sidebar.css">
+    <script src="/static/admin/js/nav_sidebar.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/login.css">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
+    <meta name="robots" content="NONE,NOARCHIVE">
+</head>
+
+
+<body class=" login" data-admin-utc-offset="-14400">
+
+<!-- Container -->
+<div id="container">
+
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+            <h1 id="site-name"><a href="/">GDPR Screenshot Tool</a></h1>
+        </div>
+    </div>
+    <!-- END Header -->
+
+    <div class="main shifted" id="main">
+        <div class="content">
+
+            <!-- Content -->
+            <div id="content" class="colM">
+                <div id="content-main">
+
+                    <div>
+                        <h1>Welcome {{ username }}!</h1>
+                    </div>
+                    <div>
+                        <h2>Current Status</h2>
+                        <div>Tasks Completed: {{ tasks_completed }}</div>
+                        <div>Tasks Remaining: {{ tasks_remaining }}</div>
+                        <div>Screenshots Marked for Further Review: {{ furtherreview }}</div>
+                    </div>
+                    <form action='/' , method="post">
+                        {% csrf_token %}
+                        <h2>Actions</h2>
+                        <p>
+                            <input type="submit" name="index_navigate" value="Classify Screenshots">
+                        </p>
+                        <p>
+                            <input type="submit" name="index_navigate" value="Review Screenshots" disabled="disabled">
+                        </p>
+                        <h2>Settings</h2>
+                        <p>
+                            <input type="checkbox" id="collaborativesort" class="filled-in" name="settings"
+                                   value="collaborativesort" disabled="disabled" {{ collaborativesort_checked }}/>
+                            <label for="collaborativesort">
+                                <span>Collaborative Sort</span>
+                            </label>
+                        </p>
+                        <h2>Account</h2>
+                        <p>
+                            <input type="submit" name="index_navigate" value="Change Password">
+                        </p>
+                        <p>
+                            <input type="submit" name="index_navigate" value="Logout">
+                        </p>
+                    </form>
+
+                </div>
+                <br class="clear">
+            </div>
+            <!-- END Content -->
+            <div id="footer"></div>
+        </div>
+    </div>
+</div>
+<!-- END Container -->
+</body>
+</html>

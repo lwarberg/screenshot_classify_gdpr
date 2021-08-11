@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<style>
+    .wrap {
+        width: 400px;
+        height: 600px;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .frame {
+        width: 100%;
+        height: 1200px;
+        border: 1;
+        -ms-transform: scale(1);
+        -moz-transform: scale(1);
+        -o-transform: scale(1);
+        -webkit-transform: scale(1);
+        transform: scale(1);
+
+        -ms-transform-origin: 0 0;
+        -moz-transform-origin: 0 0;
+        -o-transform-origin: 0 0;
+        -webkit-transform-origin: 0 0;
+        transform-origin: 0 0;
+    }
+</style>
+<head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="{% static 'assets/css/materialize.min.css' %}"
+          media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8">
+    <title>Classify Screenshot</title>
+</head>
+
+<body onload="initializeForm()">
+<!--Import jQuery before materialize.js-->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="{% static 'assets/js/materialize.min.js' %}"></script>
+<script src="{% static 'functions.js' %}"></script>
+<script type="text/javascript">
+    // Initialize Form Elements
+    $(document).ready(function () {
+        $('select').formSelect();
+    });
+
+    $(document).ready(function () {
+        $('.tooltipped').tooltip();
+    });
+
+    // Set Variables from Previous Response
+    var previous_category = '{{ previous_category }}';
+    var previous_presentation = '{{ previous_presentation }}';
+    var previous_actions_accept_checked = ('{{ previous_actions_accept_checked }}' == 'true');
+    var previous_actions_decline_checked = ('{{ previous_actions_decline_checked }}' == 'true');
+    var previous_actions_moreinfo_checked = ('{{ previous_actions_moreinfo_checked }}' == 'true');
+    var previous_actions_settings_checked = ('{{ previous_actions_settings_checked }}' == 'true');
+    var previous_actions_close_checked = ('{{ previous_actions_close_checked }}' == 'true');
+    var previous_actions_privacypolicy_checked = ('{{ previous_actions_privacypolicy_checked }}' == 'true');
+    var previous_actions_preferencecheckboxes_checked = ('{{ previous_actions_preferencecheckboxes_checked }}' == 'true');
+    var previous_content_trackingcookies_checked = ('{{ previous_content_trackingcookies_checked }}' == 'true');
+    var previous_content_othercookies_checked = ('{{ previous_content_othercookies_checked }}' == 'true');
+    var previous_content_acceptdefault_checked = ('{{ previous_content_acceptdefault_checked }}' == 'true');
+    var previous_content_implieddecline_checked = ('{{ previous_content_implieddecline_checked }}' == 'true');
+    var previous_content_explicitdecline_checked = ('{{ previous_content_explicitdecline_checked }}' == 'true');
+    var previous_content_preselectedcheckboxes_checked = ('{{ previous_content_preselectedcheckboxes_checked }}' == 'true');
+    var previous_website_adblockerpresent_checked = ('{{ previous_website_adblockerpresent_checked }}' == 'true');
+    var previous_website_subscriptionoption_checked = ('{{ previous_website_subscriptionoption_checked }}' == 'true');
+    var previous_website_paywallpresent_checked = ('{{ previous_website_paywallpresent_checked }}' == 'true');
+    var previous_website_notactive_checked = ('{{ previous_website_notactive_checked }}' == 'true');
+    var previous_furtherreview_checked = ('{{ previous_furtherreview_checked }}' == 'true');
+    var previous_furtherreview_language_checked = ('{{ previous_furtherreview_language_checked }}' == 'true');
+    var previous_furtherreview_language_select = '{{ previous_furtherreview_language_select }}';
+    var previous_furtherreview_other_checked = ('{{ previous_furtherreview_other_checked }}' == 'true');
+    var previous_furtherreview_other_text = '{{ previous_furtherreview_other_text }}';
+
+
+    function fillForm() {
+        // Fill Category Field
+        var category = document.getElementsByName('category');
+        for (var i = 0; i < category.length; i++) {
+            if (category[i].getAttribute('value') == previous_category) {
+                category[i].checked = true;
+            }
+        }
+
+        // Fill Presentation Field
+        var presentation = document.getElementsByName('presentation');
+        for (var i = 0; i < presentation.length; i++) {
+            if (presentation[i].getAttribute('value') == previous_presentation) {
+                presentation[i].checked = true;
+            }
+        }
+
+        // Fill Actions Fields
+        document.getElementById('accept').checked = previous_actions_accept_checked;
+        document.getElementById('decline').checked = previous_actions_decline_checked;
+        document.getElementById('moreinfo').checked = previous_actions_moreinfo_checked;
+        document.getElementById('settings').checked = previous_actions_settings_checked;
+        document.getElementById('close').checked = previous_actions_close_checked;
+        document.getElementById('privacypolicy').checked = previous_actions_privacypolicy_checked;
+        document.getElementById('preferencecheckboxes').checked = previous_actions_preferencecheckboxes_checked;
+
+        // Fill Content Fields
+        document.getElementById('trackingcookies').checked = previous_content_trackingcookies_checked;
+        document.getElementById('othercookies').checked = previous_content_othercookies_checked;
+        document.getElementById('acceptdefault').checked = previous_content_acceptdefault_checked;
+        document.getElementById('implieddecline').checked = previous_content_implieddecline_checked;
+        document.getElementById('explicitdecline').checked = previous_content_explicitdecline_checked;
+        document.getElementById('preselectedcheckboxes').checked = previous_content_preselectedcheckboxes_checked;
+
+        // Fill Website Fields
+        document.getElementById('adblockerpresent').checked = previous_website_adblockerpresent_checked;
+        document.getElementById('subscriptionoption').checked = previous_website_subscriptionoption_checked;
+        document.getElementById('paywallpresent').checked = previous_website_paywallpresent_checked;
+        document.getElementById('notactive').checked = previous_website_notactive_checked;
+
+
+        // Fill Further Review Fields
+        document.getElementById('furtherreview').checked = previous_furtherreview_checked;
+        document.getElementById('furtherreview_language').checked = previous_furtherreview_language_checked;
+        document.getElementById('furtherreview_language_select').value = previous_furtherreview_language_select;
+        document.getElementById('furtherreview_other').checked = previous_furtherreview_other_checked;
+        document.getElementById('furtherreview_other_text').innerText = previous_furtherreview_other_text;
+
+        refreshForm();
+    }
+</script>
+
+<div class="row">
+    <div class="col s10">
+        <div>
+            <iframe class="frame" frameborder="1" src="{% static imagepath %}" scrolling="yes" name="imgbox"
+                    width="100%" height="100%" id="imgbox" allowfullscreen></iframe>
+        </div>
+    </div>
+    <div class="col s2">
+        <form action='/{{ endpoint }}' , method="post">
+            {% csrf_token %}
+            <h5>Current Screenshot</h5>
+            {% autoescape off %}
+                {{ task_information }}
+            {% endautoescape %}
+
+            <div id="fillprevious" {{ fillprevious_button }}>
+                <p>
+                    <button class="btn-large tooltipped waves-effect waves-light red" type="button" onclick="fillForm()"
+                            id="fillpreviousbutton" data-position="bottom"
+                            data-tooltip="Fill the form with your responses from the previous screenshot" disabled>
+                        {{ fillprevious_button_text }}
+                    </button>
+                </p>
+            </div>
+
+            <h5>Notice Category</h5>
+
+            <div>
+                <label>
+                    <input type="radio" id="nonotice"
+                           name="category" value="nonotice" onclick="disableRubric()"
+                           required {{ category_nonotice_checked }}/>
+                    <span>No Privacy Banner or Pop-Up</span>
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    <input type="radio" id="blankpageorerror"
+                           name="category" value="blankpage" onclick="disableRubric()"
+                           required {{ category_blankpage_checked }}/>
+                    <span>Screenshot is Blank or Error</span>
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    <input type="radio" id="blockeuusers"
+                           name="category" value="blockeuusers" onclick="disableRubric()"
+                           required {{ category_blockeuusers_checked }}/>
+                    <span>Block EU Users</span>
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    <input type="radio" id="cookiewall"
+                           name="category" value="cookiewall" onclick="disableRubric()"
+                           required {{ category_cookiewall_checked }}/>
+                    <span>Cookie Wall (Forced Accept)</span>
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    <input type="radio" id="notice"
+                           name="category" value="notice" onclick="enableRubric()"
+                           required {{ category_notice_checked }}/>
+                    <span>Banner or Pop-Up</span>
+                </label>
+            </div>
+
+            <div id="rubric" hidden>
+                <h5>Notice Rubric</h5>
+
+                <div class="tooltipped" data-position="bottom"
+                     data-tooltip="Does the notice prevent users from viewing the website's content?">
+                    <h6><u>Presentation</u><i class="tiny material-icons">info_outline</i></h6>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="radio" id="obst" name="presentation" value="obst" {{ presentation_obst_checked }}/>
+                        <span>Obstructing</span>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="radio" id="banner" name="presentation"
+                               value="banner" {{ presentation_banner_checked }}/>
+                        <span>Non-Obstructing</span>
+                    </label>
+                </div>
+
+                <div class="tooltipped" data-position="bottom"
+                     data-tooltip="What types of actions does the notice offer to users?">
+                    <h6><u>Actions</u><i class="tiny material-icons">info_outline</i></h6>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" id="accept" class="filled-in" name="actions"
+                               value="accept" {{ actions_accept_checked }}/>
+                        <span>'Accept'/'Allow'/'Okay' Button</span>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" id="decline" class="filled-in" name="actions"
+                               value="decline" {{ actions_decline_checked }}/>
+                        <span>'Decline'/'Deny' Button</span>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" id="moreinfo" class="filled-in" name="actions"
+                               value="moreinfo" {{ actions_moreinfo_checked }}/>
+                        <span>'More Info'/'Cookie Policy' Button</span>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" id="settings" class="filled-in" name="actions"
+                               value="settings" {{ actions_settings_checked }}/>
+                        <span>'Settings' Button</span>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" id="close" class="filled-in" name="actions"
+                               value="close" {{ actions_close_checked }}/>
+                        <span>'x'/'Close' Button</span>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" id="privacypolicy" class="filled-in" name="actions"
+                               value="privacypolicy" {{ actions_privacypolicy_checked }}/>
+                        <span>'Privacy Policy' Button</span>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" id="preferencecheckboxes" class="filled-in" name="actions"
+                               value="preferencecheckboxes" {{ actions_preferencecheckboxes_checked }}/>
+                        <span>Preference Checkboxes</span>
+                    </label>
+                </div>
+
+                <div class="tooltipped" data-position="bottom"
+                     data-tooltip="What does the privacy notice communicate to users about how the website handles user data?">
+                    <h6><u>Content</u><i class="tiny material-icons">info_outline</i></h6>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" id="trackingcookies" class="filled-in" name="content"
+                               value="trackingcookies" {{ content_trackingcookies_checked }}/>
+                        <span>Tracking Cookies Present</span>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" id="othercookies" class="filled-in" name="content"
+                               value="othercookies" {{ content_othercookies_checked }}/>
+                        <span>Other Cookies Present</span>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" id="acceptdefault" class="filled-in" name="content"
+                               value="acceptdefault" {{ content_acceptdefault_checked }}/>
+                        <span>Cookies Accepted by Default</span>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" id="implieddecline" class="filled-in" name="content"
+                               value="implieddecline" {{ content_implieddecline_checked }}/>
+                        <span>Implied Ability to Decline</span>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" id="explicitdecline" class="filled-in" name="content"
+                               value="explicitdecline" {{ content_explicitdecline_checked }}/>
+                        <span>Explicit Ability to Decline</span>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" id="preselectedcheckboxes" class="filled-in" name="content"
+                               value="preselectedcheckboxes" {{ content_preselectedcheckboxes_checked }}/>
+                        <span>Preference Checkboxes Preselected</span>
+                    </label>
+                </div>
+
+            </div>
+
+            <h5>Website Features</h5>
+
+            <div>
+                <label>
+                    <input type="checkbox" id="adblockerpresent" class="filled-in" name="website"
+                           value="adblockerpresent" {{ website_adblockerpresent_checked }}/>
+                    <span>Adblocker Message Present</span>
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    <input type="checkbox" id="subscriptionoption" class="filled-in" name="website"
+                           value="subscriptionoption" {{ website_subscriptionoption_checked }}/>
+                    <span>Subscription Option</span>
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    <input type="checkbox" id="paywallpresent" class="filled-in" name="website"
+                           value="paywallpresent" {{ website_paywallpresent_checked }}/>
+                    <span>Paywall Present</span>
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    <input type="checkbox" id="notactive" class="filled-in" name="website"
+                           value="paywallpresent" {{ website_notactive_checked }}/>
+                    <span>Website Not Active</span>
+                </label>
+            </div>
+
+            <div class="card grey lighten-3">
+                <h5>Further Review</h5>
+
+                <div>
+                    <label>
+                        <input type="checkbox" id="furtherreview" class="filled-in" name="furtherreview"
+                               value="furtherreview"
+                               onclick="revealElement(document.getElementById('furtherreview'), document.getElementById('furtherreviewreasons'))" {{ furtherreview_checked }} />
+                        <span>Flag for Further Review</span>
+                    </label>
+                </div>
+
+                <div id="furtherreviewreasons" hidden>
+                    <h6><u>Reasons for Further Review</u></h6>
+
+                    <div>
+                        <label>
+                            <input type="checkbox" id="furtherreview_language" class="filled-in"
+                                   name="furtherreview_language"
+                                   value="furtherreview_language"
+                                   onclick="revealElement(document.getElementById('furtherreview_language'), document.getElementById('furtherreview_language_select_area'))" {{ furtherreview_language_checked }} />
+                            <span>Foreign Language</span>
+                        </label>
+                    </div>
+
+                    <div id="furtherreview_language_select_area" class="input-field" hidden>
+                        <select id="furtherreview_language_select" name="furtherreview_language_select">
+                            <option value="" disabled selected>Select Language</option>
+                            <option value="french">French</option>
+                            <option value="spanish">Spanish</option>
+                            <option value="german">German</option>
+                            <option value="italian">Italian</option>
+                            <option value="russian">Russian</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>
+                            <input type="checkbox" id="furtherreview_other" class="filled-in" name="furtherreview_other"
+                                   value="furtherreview_other"
+                                   onclick="revealElement(document.getElementById('furtherreview_other'), document.getElementById('furtherreview_other_text_area'))" {{ furtherreview_other_checked }} />
+                            <span>Other Reasons</span>
+                        </label>
+                    </div>
+
+                    <div id="furtherreview_other_text_area" hidden>
+                        <textarea id="furtherreview_other_text" name="furtherreview_other_text"
+                                  class="materialize-textarea white">{{ furtherreview_other_text }}</textarea>
+                        <label for="furtherreview_other_text">Reasons for further review</label>
+                    </div>
+
+                </div>
+            </div>
+            <p>
+                <button class="btn waves-effect waves-light grey darken-2" type="submit" name="task_navigate"
+                        value="previous" formnovalidate>Previous
+                </button>
+                <button class="btn waves-effect waves-light" type="submit" name="task_navigate" value="next">Next
+                </button>
+            </p>
+            <p>
+                <button class="btn waves-effect waves-light grey darken-2" type="submit" name="task_navigate"
+                        value="home" formnovalidate>Return Home
+                </button>
+            </p>
+            <input type="hidden" name="channel_id" value="{{ channel_id }}"/>
+            <input type="hidden" name="view_id" value="{{ view_id }}"/>
+            <input type="hidden" name="wave_num" value="{{ wave_num }}"/>
+            <input type="hidden" name="country" value="{{ country }}"/>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
